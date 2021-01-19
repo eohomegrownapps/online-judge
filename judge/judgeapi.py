@@ -56,8 +56,8 @@ def judge_submission(submission, rejudge=False, batch_rejudge=False, judge_id=No
     REJUDGE_PRIORITY = 2
     BATCH_REJUDGE_PRIORITY = 3
 
-    updates = {'time': None, 'memory': None, 'points': None, 'result': None, 'error': None,
-               'was_rejudged': rejudge or batch_rejudge, 'status': 'QU'}
+    updates = {'time': None, 'memory': None, 'points': None, 'result': None, 'case_points': 0,
+               'case_total': 0, 'error': None, 'was_rejudged': rejudge or batch_rejudge, 'status': 'QU'}
     try:
         # This is set proactively; it might get unset in judgecallback's on_grading_begin if the problem doesn't
         # actually have pretests stored on the judge.
@@ -113,6 +113,6 @@ def abort_submission(submission):
     # This defaults to true, so that in the case the JudgeList fails to remove the submission from the queue,
     # and returns a bad-request, the submission is not falsely shown as "Aborted" when it will still be judged.
     if not response.get('judge-aborted', True):
-        Submission.objects.filter(id=submission.id).update(status='AB', result='AB')
+        Submission.objects.filter(id=submission.id).update(status='AB', result='AB', points=0)
         event.post('sub_%s' % Submission.get_id_secret(submission.id), {'type': 'aborted-submission'})
         _post_update_submission(submission, done=True)

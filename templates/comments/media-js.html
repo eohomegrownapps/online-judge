@@ -39,6 +39,7 @@
                     $reply_form.prepend('<a class="close">x</a>');
                     $reply_form.find('form.comment-submit-form input#id_parent').val(parent);
                     $reply_form.appendTo($comment_reply);
+                    register_dmmd_preview($('#' + reply_id + ' #id_body-preview'));
                 }
                 $comment_reply.fadeIn();
 
@@ -73,6 +74,10 @@
                 var max_revision = parseInt($comment.attr("data-max-revision"));
                 var revision_ajax = $comment.attr("data-revision-ajax");
                 var show_revision = cur_revision + offset;
+
+                // Do nothing if desired revision is out of buonds
+                if (show_revision < 0 || show_revision > max_revision)
+                    return;
 
                 $comment.attr("data-revision", show_revision);
 
