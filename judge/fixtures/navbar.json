@@ -7,7 +7,7 @@
             "lft": 1,
             "order": 1,
             "parent": null,
-            "path": "/problems/",
+            "path": "/problems/?order=-group",
             "regex": "^/problem",
             "rght": 2,
             "tree_id": 1
